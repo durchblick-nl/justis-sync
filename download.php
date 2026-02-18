@@ -3,11 +3,20 @@
  * Simple Download Script for JUSTIS Magic Sync
  *
  * This script serves the shared history file directly from the web server.
- * Upload to: https://sync.roger.tips/download.php
- *
- * Security features:
- * - HTTPS enforcement
+ * TLS terminated by Traefik. Optional API key auth via SYNC_API_KEY env var.
  */
+
+// Optional API key authentication
+$apiKey = getenv('SYNC_API_KEY');
+if ($apiKey) {
+    $provided = $_SERVER['HTTP_X_API_KEY'] ?? '';
+    if (!hash_equals($apiKey, $provided)) {
+        http_response_code(401);
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Unauthorized']);
+        exit;
+    }
+}
 
 header('Content-Type: application/json');
 

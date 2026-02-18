@@ -10,7 +10,17 @@
 
 session_start();
 
-define('ADMIN_PASSWORD', getenv('ADMIN_PASSWORD') ?: 'changeme');
+$adminPassword = getenv('ADMIN_PASSWORD');
+if (empty($adminPassword)) {
+    http_response_code(503);
+    die('Admin panel not configured (ADMIN_PASSWORD env var missing)');
+}
+define('ADMIN_PASSWORD', $adminPassword);
+
+// CSRF token
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 // Handle logout
 if (isset($_GET['logout'])) {
@@ -21,10 +31,13 @@ if (isset($_GET['logout'])) {
 
 // Handle login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
-    if ($_POST['password'] === ADMIN_PASSWORD) {
+    if (hash_equals(ADMIN_PASSWORD, $_POST['password'])) {
+        session_regenerate_id(true);
         $_SESSION['authenticated'] = true;
         $_SESSION['auth_time'] = time();
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     } else {
+        sleep(1);
         $loginError = 'Falsches Passwort';
     }
 }
@@ -112,6 +125,7 @@ if (!$isAuthenticated) {
                 <div class="error"><?php echo htmlspecialchars($loginError); ?></div>
             <?php endif; ?>
             <form method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
                 <input type="password" name="password" placeholder="Passwort eingeben..." required autofocus>
                 <button type="submit">Anmelden</button>
             </form>
@@ -132,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['load_variable'])) {
     header('Content-Type: application/json');
 
     try {
-        $variable = $_GET['load_variable'];
+        $variable = preg_replace('/[^a-zA-Z0-9_]/', '', $_GET['load_variable']);
 
         if (!file_exists($filepath)) {
             throw new Exception("Keine Datendatei vorhanden");
@@ -187,7 +201,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['variable'])) {
     header('Content-Type: application/json');
 
     try {
-        $variable = $_POST['variable'] ?? '';
+        // Validate CSRF token
+        if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+            throw new Exception("CSRF validation failed");
+        }
+
+        $variable = preg_replace('/[^a-zA-Z0-9_]/', '', $_POST['variable'] ?? '');
         $data = $_POST['data'] ?? '';
         $replaceAll = isset($_POST['replace_all']) && $_POST['replace_all'] === '1';
 
@@ -537,6 +556,7 @@ sort($variables);
         </div>
 
         <form id="importForm">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
             <div class="form-group">
                 <label for="variable">Variable:</label>
                 <div class="variable-row">
@@ -677,9 +697,14 @@ sort($variables);
                 if (result.success) {
                     const action = replaceAll.checked ? 'ersetzt' : 'zusammengeführt';
                     status.className = 'status success';
-                    status.innerHTML = `<strong>✅ Erfolg!</strong><br>${result.message}<br>
-                        Hinzugefügt: ${result.added} | Aktualisiert: ${result.updated} | Gesamt: ${result.total_entries}<br>
-                        <em>Daten wurden ${action}.</em>`;
+                    status.textContent = '';
+                    const b = document.createElement('strong');
+                    b.textContent = 'Erfolg! ' + result.message;
+                    status.appendChild(b);
+                    status.appendChild(document.createElement('br'));
+                    status.appendChild(document.createTextNode(
+                        `Hinzugefügt: ${result.added} | Aktualisiert: ${result.updated} | Gesamt: ${result.total_entries} (${action})`
+                    ));
                     document.getElementById('data').value = '';
                     document.getElementById('dataInfo').style.display = 'none';
                     document.getElementById('replaceGroup').style.display = 'none';

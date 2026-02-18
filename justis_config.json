@@ -1,0 +1,172 @@
+[
+  {
+    "displayName": "https://login.cap.ch/justisnumbers",
+    "key": "url",
+    "order": 0
+  },
+  {
+    "displayName": "Status",
+    "key": "status",
+    "order": 1
+  },
+  {
+    "displayName": "Zeitstempel",
+    "key": "timestamp",
+    "order": 2
+  },
+  {
+    "displayName": "Jahresprämie (CHF)",
+    "key": "sum",
+    "order": 3
+  },
+  {
+    "displayName": "Aktive Verträge",
+    "key": "clients",
+    "order": 4
+  },
+  {
+    "displayName": "Vertäge (DE)",
+    "key": "clients_de",
+    "order": 5
+  },
+  {
+    "displayName": "Verträge (FR)",
+    "key": "clients_fr",
+    "order": 6
+  },
+  {
+    "displayName": "Letzter Abschluss",
+    "key": "last_date",
+    "order": 7
+  },
+  {
+    "displayName": "Letzter Vertrag",
+    "key": "last_name",
+    "order": 8
+  },
+  {
+    "displayName": "Heute",
+    "key": "today",
+    "order": 9
+  },
+  {
+    "displayName": "Woche",
+    "key": "this_week",
+    "order": 10
+  },
+  {
+    "displayName": "Monat (Aktuell)",
+    "key": "this_month",
+    "order": 11
+  },
+  {
+    "displayName": "Widerruf",
+    "key": "refunded",
+    "order": 12
+  },
+  {
+    "displayName": "Gratis",
+    "key": "free",
+    "order": 13
+  },
+  {
+    "displayName": "Gratis (DE)",
+    "key": "free_de",
+    "order": 14
+  },
+  {
+    "displayName": "Gratis (FR)",
+    "key": "free_fr",
+    "order": 15
+  },
+  {
+    "displayName": "CAP (Verträge)",
+    "key": "clients_cap",
+    "order": 16
+  },
+  {
+    "displayName": "CAP (Gratis)",
+    "key": "free_cap",
+    "order": 17
+  },
+  {
+    "displayName": "Elvia (Verträge)",
+    "key": "clients_elvia",
+    "order": 18
+  },
+  {
+    "displayName": "Elvia (Gratis)",
+    "key": "free_elvia",
+    "order": 19
+  },
+  {
+    "displayName": "Neon (Verträge)",
+    "key": "clients_neon",
+    "order": 20
+  },
+  {
+    "displayName": "Neon (Gratis)",
+    "key": "free_neon",
+    "order": 21
+  },
+  {
+    "displayName": "SLKK (Verträge)",
+    "key": "clients_slkk",
+    "order": 22
+  },
+  {
+    "displayName": "SLKK (Gratis)",
+    "key": "free_slkk",
+    "order": 23
+  },
+  {
+    "displayName": "ellexx  (Verträge)",
+    "key": "clients_ellexx",
+    "order": 24
+  },
+  {
+    "displayName": "ellexx (Gratis)",
+    "key": "free_ellexx",
+    "order": 25
+  },
+  {
+    "displayName": "Anders (Verträge)",
+    "key": "clients_other",
+    "order": 26
+  },
+  {
+    "displayName": "Anders (Gratis)",
+    "key": "free_other",
+    "order": 27
+  },
+  {
+    "displayName": "Nachrichten",
+    "key": "inbox_unreadcount",
+    "order": 28
+  },
+  {
+    "displayName": "",
+    "key": "messenger_unreadcount",
+    "order": 29
+  },
+  {
+    "displayName": "",
+    "key": "sms_unreadcount",
+    "order": 30
+  },
+  {
+    "displayName": "",
+    "key": "googlebm_unreadcount",
+    "order": 31
+  },
+  {
+    "displayName": "WhatsApp",
+    "key": "whatsapp_unreadcount",
+    "order": 32
+  },
+  {
+    "displayName": "Feedback",
+    "key": "unanswered_feedbackcount",
+    "order": 33
+  }  
+]
